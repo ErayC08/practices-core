@@ -1,0 +1,5 @@
+package com.example.password;
+
+public enum PasswordRule {
+    CONTAINS_DIGIT, CONTAINS_LOWERCASE, CONTAINS_UPPERCASE, CONTAINS_SPECIAL_CHARACTER, HAS_VALID_LENGTH
+}
