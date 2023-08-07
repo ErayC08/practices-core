@@ -1,4 +1,4 @@
-package com.example;
+package com.example.fi;
 
 @FunctionalInterface
 public interface CustomPredicate<T> {

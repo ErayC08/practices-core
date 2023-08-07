@@ -4,59 +4,40 @@ import java.util.*;
 
 public class PasswordValidator {
 
-    public static Stack<PasswordRule> getBrokenRules(String password, Set<PasswordRule> passwordRules) {
-        if (passwordRules.contains(PasswordRule.HAS_VALID_LENGTH)) {
-            throw new PasswordValidatorException("Use this method with 'minLength' and 'maxLength' parameters in order to check the length");
-        }
-        Map<PasswordRule, Boolean> passwordRuleBooleanMap = updatePasswordRuleBooleanMap(password, buildPasswordRuleBooleanMap(passwordRules));
+    public static Set<PasswordRule> findBrokenRules(String password) {
+        Map<PasswordRule, Boolean> passwordRuleBooleanMap = initializePasswordRuleBooleanMap();
 
-        return findBrokenRules(passwordRuleBooleanMap);
+        processPasswordRuleBooleanMap(password, passwordRuleBooleanMap);
+
+        return extractBrokenRules(passwordRuleBooleanMap);
     }
 
-    public static Stack<PasswordRule> getBrokenRules(String password, Set<PasswordRule> passwordRules, int minLength) {
-        Stack<PasswordRule> brokenRules = getBrokenRules(password, passwordRules);
+    public static Set<PasswordRule> findBrokenRules(String password, int minLength) {
+        Map<PasswordRule, Boolean> passwordRuleBooleanMap = initializePasswordRuleBooleanMap();
 
-        if (password.length() < minLength) {
-            brokenRules.push(PasswordRule.HAS_VALID_LENGTH);
-        }
-        return brokenRules;
+        processPasswordRuleBooleanMap(password, passwordRuleBooleanMap, minLength);
+
+        return extractBrokenRules(passwordRuleBooleanMap);
     }
 
-    public static Stack<PasswordRule> getBrokenRules(String password, Set<PasswordRule> passwordRules, int minLength, int maxLength) {
-        Stack<PasswordRule> brokenRules = getBrokenRules(password, passwordRules);
+    public static Set<PasswordRule> findBrokenRules(String password, int minLength, int maxLength) {
+        Map<PasswordRule, Boolean> passwordRuleBooleanMap = initializePasswordRuleBooleanMap();
 
-        if (password.length() < minLength || maxLength < password.length()) {
-            brokenRules.push(PasswordRule.HAS_VALID_LENGTH);
-        }
-        return brokenRules;
+        processPasswordRuleBooleanMap(password, passwordRuleBooleanMap, minLength, maxLength);
+
+        return extractBrokenRules(passwordRuleBooleanMap);
     }
 
-    public static boolean isValid(String password, Set<PasswordRule> passwordRules) {
-        return getBrokenRules(password, passwordRules).empty();
-    }
-
-    public static boolean isValid(String password, Set<PasswordRule> passwordRules, int minLength) {
-        return getBrokenRules(password, passwordRules, minLength).empty();
-    }
-
-    public static boolean isValid(String password, Set<PasswordRule> passwordRules, int minLength, int maxLength) {
-        return getBrokenRules(password, passwordRules, minLength, maxLength).empty();
-    }
-
-    private static Map<PasswordRule, Boolean> buildPasswordRuleBooleanMap(Set<PasswordRule> passwordRules) {
+    private static Map<PasswordRule, Boolean> initializePasswordRuleBooleanMap() {
         Map<PasswordRule, Boolean> passwordRuleBooleanMap = new HashMap<>();
 
         for (PasswordRule passwordRule : PasswordRule.values()) {
-            if (passwordRules.contains(passwordRule)) {
-                passwordRuleBooleanMap.put(passwordRule, false);
-            } else {
-                passwordRuleBooleanMap.put(passwordRule, true);
-            }
+            passwordRuleBooleanMap.put(passwordRule, false);
         }
         return passwordRuleBooleanMap;
     }
 
-    private static Map<PasswordRule, Boolean> updatePasswordRuleBooleanMap(String password, Map<PasswordRule, Boolean> passwordRuleBooleanMap) {
+    private static void processPasswordRuleBooleanMap(String password, Map<PasswordRule, Boolean> passwordRuleBooleanMap) {
         String specialChars = "~`!@#$%^&*()-_=+\\\\|[{]};:'\\\",<.>/?";
 
         for (int i = 0; i < password.length(); i++) {
@@ -72,15 +53,31 @@ public class PasswordValidator {
                 passwordRuleBooleanMap.put(PasswordRule.CONTAINS_SPECIAL_CHARACTER, true);
             }
         }
-        return passwordRuleBooleanMap;
+        passwordRuleBooleanMap.put(PasswordRule.HAS_VALID_LENGTH, true);
     }
 
-    private static Stack<PasswordRule> findBrokenRules(Map<PasswordRule, Boolean> passwordRuleBooleanMap) {
-        Stack<PasswordRule> brokenRules = new Stack<>();
+    private static void processPasswordRuleBooleanMap(String password, Map<PasswordRule, Boolean> passwordRuleBooleanMap, int minLength) {
+        processPasswordRuleBooleanMap(password, passwordRuleBooleanMap);
+
+        if (password.length() < minLength) {
+            passwordRuleBooleanMap.put(PasswordRule.HAS_VALID_LENGTH, false);
+        }
+    }
+
+    private static void processPasswordRuleBooleanMap(String password, Map<PasswordRule, Boolean> passwordRuleBooleanMap, int minLength, int maxLength) {
+        processPasswordRuleBooleanMap(password, passwordRuleBooleanMap);
+
+        if (password.length() < minLength || maxLength < password.length()) {
+            passwordRuleBooleanMap.put(PasswordRule.HAS_VALID_LENGTH, false);
+        }
+    }
+
+    private static Set<PasswordRule> extractBrokenRules(Map<PasswordRule, Boolean> passwordRuleBooleanMap) {
+        Set<PasswordRule> brokenRules = new HashSet<>();
 
         for (Map.Entry<PasswordRule, Boolean> entry : passwordRuleBooleanMap.entrySet()) {
             if (!entry.getValue()) {
-                brokenRules.push(entry.getKey());
+                brokenRules.add(entry.getKey());
             }
         }
         return brokenRules;
