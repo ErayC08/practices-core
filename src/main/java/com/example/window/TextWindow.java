@@ -1,9 +1,9 @@
-package com.example.editor;
+package com.example.window;
 
 public class TextWindow {
     private StringBuilder currentText = new StringBuilder();
 
-    public void appendText(String text) {
+    public void write(String text) {
         currentText.append(text);
     }
 
