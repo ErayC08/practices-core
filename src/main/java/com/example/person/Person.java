@@ -1,37 +1,33 @@
 package com.example.person;
 
+import java.time.LocalDate;
+
 public class Person {
     private String firstName;
     private String lastName;
-    private String email;
+    private LocalDate dateOfBirth;
 
     public String getFirstName() {
         return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
     }
 
     public String getLastName() {
         return lastName;
     }
 
+    public LocalDate getDateOfBirth() {
+        return dateOfBirth;
+    }
+
+    public void setDateOfBirth(LocalDate dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
+    }
+
     public void setLastName(String lastName) {
         this.lastName = lastName;
     }
 
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public Person(String firstName, String lastName, String email) {
-        setFirstName(firstName);
-        setLastName(lastName);
-        setEmail(email);
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
 }

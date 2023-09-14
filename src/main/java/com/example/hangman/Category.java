@@ -1,4 +1,4 @@
-package com.example.game.hangman;
+package com.example.hangman;
 
 public enum Category {
     ANIMALS, COUNTRIES, NONE

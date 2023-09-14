@@ -1,4 +1,4 @@
-package com.example.game.hangman;
+package com.example.hangman;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,8 +12,8 @@ import java.util.Scanner;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class Main {
-    public static final Logger log = LoggerFactory.getLogger(Main.class);
+public class Driver {
+    public static final Logger log = LoggerFactory.getLogger(Driver.class);
     private static final String FILE_PATH = "src/main/resources/hangman/names.txt";
     private static final Random random = new Random();
     private static final Scanner scanner = new Scanner(System.in);
