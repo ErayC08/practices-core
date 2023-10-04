@@ -1,4 +1,4 @@
-package com.example.ttt;
+package com.example.color;
 
 import java.util.function.Consumer;
 

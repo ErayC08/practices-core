@@ -1,6 +1,5 @@
 package com.example.color;
 
-public interface Color {
-
-    String hexValue();
+public enum Color {
+    RED, YELLOW, NONE
 }
