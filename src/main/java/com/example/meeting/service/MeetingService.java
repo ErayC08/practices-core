@@ -1,8 +1,12 @@
 package com.example.meeting.service;
 
+import com.example.meeting.Meeting;
 import org.springframework.stereotype.Service;
 
-@Service
-public class MeetingService {
+import java.util.List;
 
+@Service
+public interface MeetingService {
+
+    List<Meeting> findAll();
 }

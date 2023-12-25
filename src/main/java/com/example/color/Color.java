@@ -1,4 +1,4 @@
-package com.example.table;
+package com.example.color;
 
 public enum Color {
     RED, YELLOW, NONE;
@@ -8,7 +8,7 @@ public enum Color {
         return this.name().substring(0, 1);
     }
 
-    public boolean isPresent() {
-        return this == RED || this == YELLOW;
+    public boolean isNone() {
+        return this == NONE;
     }
 }
