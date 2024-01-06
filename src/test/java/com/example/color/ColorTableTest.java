@@ -43,7 +43,7 @@ public class ColorTableTest {
     }
 
     @Test
-    void givenColorNone_whenSetColor_thenThrowInvalidColorException() {
+    void givenInvalidColorInstance_whenSetColor_thenThrowInvalidColorException() {
         final Color color = Color.NONE;
 
         Assertions.assertThrows(InvalidColorException.class,

@@ -1,5 +1,5 @@
 package com.example.game;
 
-public enum GameStatus {
+public enum Status {
     WIN, LOSE, DRAW, NONE
 }
