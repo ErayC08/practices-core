@@ -77,11 +77,11 @@ public class Meeting implements Comparable<Meeting> {
         return this.dateTime.hashCode();
     }
 
-    public static Meeting pseudoMeeting(LocalDateTime dateTime) {
+    public static Meeting pseudoMeeting(String title, String description, LocalDateTime dateTime) {
         Meeting meeting = new Meeting();
 
-        meeting.title = "A Pseudo-Title";
-        meeting.description = "A pseudo-description.";
+        meeting.title = title;
+        meeting.description = description;
         meeting.dateTime = dateTime;
 
         return meeting;

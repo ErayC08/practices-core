@@ -28,7 +28,7 @@ public class MeetingService {
     }
 
     public Meeting nextMeeting() {
-        return this.meetings.higher(Meeting.pseudoMeeting(LocalDateTime.now()));
+        return this.meetings.higher(Meeting.pseudoMeeting(null, null, LocalDateTime.now()));
     }
 
     public boolean add(Meeting meeting) {
@@ -36,6 +36,6 @@ public class MeetingService {
     }
 
     public boolean remove(LocalDateTime dateTime) {
-        return this.meetings.remove(Meeting.pseudoMeeting(dateTime));
+        return this.meetings.remove(Meeting.pseudoMeeting(null, null, dateTime));
     }
 }

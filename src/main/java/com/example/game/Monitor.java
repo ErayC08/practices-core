@@ -5,15 +5,15 @@ public class Monitor {
     private int losses = 0;
     private int draws = 0;
 
-    public int wins() {
+    public int getWins() {
         return this.wins;
     }
 
-    public int losses() {
+    public int getLosses() {
         return this.losses;
     }
 
-    public int draws() {
+    public int getDraws() {
         return this.draws;
     }
 

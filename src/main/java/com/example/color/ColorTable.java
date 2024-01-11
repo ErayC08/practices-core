@@ -8,7 +8,7 @@ public class ColorTable {
 
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
-                //This is used to prevent null-case.
+                //The purpose of this is to prevent null-case.
                 this.colors[i][j] = Color.NONE;
             }
         }
@@ -29,11 +29,11 @@ public class ColorTable {
         this.colors[rowIndex][columnIndex] = color;
     }
 
-    public boolean matchesAt(int rowIndex, int columnIndex, int expectedMatchingCount) {
-        return horizontallyMatchesAt(rowIndex, columnIndex, expectedMatchingCount) || verticallyMatchesAt(rowIndex, columnIndex, expectedMatchingCount) || diagonallyMatchesAt(rowIndex, columnIndex, expectedMatchingCount);
+    public boolean formsLine(int rowIndex, int columnIndex, int expectedMatchingCount) {
+        return horizontallyFormsLine(rowIndex, columnIndex, expectedMatchingCount) || verticallyFormsLine(rowIndex, columnIndex, expectedMatchingCount) || diagonallyFormsLine(rowIndex, columnIndex, expectedMatchingCount);
     }
 
-    public boolean horizontallyMatchesAt(int rowIndex, int columnIndex, int expectedMatchingCount) {
+    public boolean horizontallyFormsLine(int rowIndex, int columnIndex, int expectedMatchingCount) {
         Color middle = getColor(rowIndex, columnIndex);
 
         if (middle == null || middle.isNone()) {
@@ -60,7 +60,7 @@ public class ColorTable {
         return false;
     }
 
-    public boolean verticallyMatchesAt(int rowIndex, int columnIndex, int expectedMatchingCount) {
+    public boolean verticallyFormsLine(int rowIndex, int columnIndex, int expectedMatchingCount) {
         Color middle = getColor(rowIndex, columnIndex);
 
         if (middle == null || middle.isNone()) {
@@ -87,7 +87,7 @@ public class ColorTable {
         return false;
     }
 
-    public boolean diagonallyMatchesAt(int rowIndex, int columnIndex, int expectedMatchingCount) {
+    public boolean diagonallyFormsLine(int rowIndex, int columnIndex, int expectedMatchingCount) {
         Color middle = getColor(rowIndex, columnIndex);
 
         if (middle == null || middle.isNone()) {
