@@ -4,19 +4,19 @@ public class ColorTable {
     private final Color[][] colors;
 
     public ColorTable(int rows, int columns) {
-        this.colors = new Color[rows][columns];
+        colors = new Color[rows][columns];
 
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < columns; j++) {
                 //The purpose of this is to prevent null-case.
-                this.colors[i][j] = Color.NONE;
+                colors[i][j] = Color.NONE;
             }
         }
     }
 
     public Color getColor(int rowIndex, int columnIndex) {
         try {
-            return this.colors[rowIndex][columnIndex];
+            return colors[rowIndex][columnIndex];
         } catch (ArrayIndexOutOfBoundsException exception) {
             return null;
         }
@@ -24,35 +24,35 @@ public class ColorTable {
 
     public void setColor(int rowIndex, int columnIndex, Color color) {
         if (color == null || color.isNone()) {
-            throw new InvalidColorException();
+            throw new IllegalArgumentException("The color is missing, or neither red nor yellow.");
         }
-        this.colors[rowIndex][columnIndex] = color;
+        colors[rowIndex][columnIndex] = color;
     }
 
-    public boolean formsLine(int rowIndex, int columnIndex, int expectedMatchingCount) {
-        return horizontallyFormsLine(rowIndex, columnIndex, expectedMatchingCount) || verticallyFormsLine(rowIndex, columnIndex, expectedMatchingCount) || diagonallyFormsLine(rowIndex, columnIndex, expectedMatchingCount);
+    public boolean hasAdjacencyAt(int rowIndex, int columnIndex, int expectedAdjacencyCount) {
+        return hasHorizontalAdjacencyAt(rowIndex, columnIndex, expectedAdjacencyCount) || hasVerticalAdjacencyAt(rowIndex, columnIndex, expectedAdjacencyCount) || hasDiagonalAdjacencyAt(rowIndex, columnIndex, expectedAdjacencyCount);
     }
 
-    public boolean horizontallyFormsLine(int rowIndex, int columnIndex, int expectedMatchingCount) {
+    public boolean hasHorizontalAdjacencyAt(int rowIndex, int columnIndex, int expectedAdjacencyCount) {
         Color middle = getColor(rowIndex, columnIndex);
 
         if (middle == null || middle.isNone()) {
             return false;
         }
-        int matchingCountEastSide = 1;
-        int matchingCountWestSide = 1;
+        int adjacencyCountEastSide = 1;
+        int adjacencyCountWestSide = 1;
 
-        for (int i = 1; i <= expectedMatchingCount; i++) {
+        for (int i = 1; i <= expectedAdjacencyCount; i++) {
             Color eastern = getColor(rowIndex, columnIndex + i);
             Color western = getColor(rowIndex, columnIndex - i);
 
             if (eastern == middle) {
-                if (expectedMatchingCount == ++matchingCountEastSide) {
+                if (expectedAdjacencyCount == ++adjacencyCountEastSide) {
                     return true;
                 }
             }
             if (western == middle) {
-                if (expectedMatchingCount == ++matchingCountWestSide) {
+                if (expectedAdjacencyCount == ++adjacencyCountWestSide) {
                     return true;
                 }
             }
@@ -60,26 +60,26 @@ public class ColorTable {
         return false;
     }
 
-    public boolean verticallyFormsLine(int rowIndex, int columnIndex, int expectedMatchingCount) {
+    public boolean hasVerticalAdjacencyAt(int rowIndex, int columnIndex, int expectedAdjacencyCount) {
         Color middle = getColor(rowIndex, columnIndex);
 
         if (middle == null || middle.isNone()) {
             return false;
         }
-        int matchingCountSouthSide = 1;
-        int matchingCountNorthSide = 1;
+        int adjacencyCountSouthSide = 1;
+        int adjacencyCountNorthSide = 1;
 
-        for (int i = 1; i <= expectedMatchingCount; i++) {
+        for (int i = 1; i <= expectedAdjacencyCount; i++) {
             Color southern = getColor(rowIndex + i, columnIndex);
             Color northern = getColor(rowIndex - i, columnIndex);
 
             if (southern == middle) {
-                if (expectedMatchingCount == ++matchingCountSouthSide) {
+                if (expectedAdjacencyCount == ++adjacencyCountSouthSide) {
                     return true;
                 }
             }
             if (northern == middle) {
-                if (expectedMatchingCount == ++matchingCountNorthSide) {
+                if (expectedAdjacencyCount == ++adjacencyCountNorthSide) {
                     return true;
                 }
             }
@@ -87,52 +87,44 @@ public class ColorTable {
         return false;
     }
 
-    public boolean diagonallyFormsLine(int rowIndex, int columnIndex, int expectedMatchingCount) {
+    public boolean hasDiagonalAdjacencyAt(int rowIndex, int columnIndex, int expectedAdjacencyCount) {
         Color middle = getColor(rowIndex, columnIndex);
 
         if (middle == null || middle.isNone()) {
             return false;
         }
-        int matchingCountNorthEastSide = 1;
-        int matchingCountSouthEastSide = 1;
-        int matchingCountSouthWestSide = 1;
-        int matchingCountNorthWestSide = 1;
+        int adjacencyCountNorthEastSide = 1;
+        int adjacencyCountSouthEastSide = 1;
+        int adjacencyCountSouthWestSide = 1;
+        int adjacencyCountNorthWestSide = 1;
 
-        for (int i = 1; i <= expectedMatchingCount; i++) {
+        for (int i = 1; i <= expectedAdjacencyCount; i++) {
             Color northEastern = getColor(rowIndex - i, columnIndex + i);
             Color southEastern = getColor(rowIndex + i, columnIndex + i);
             Color southWestern = getColor(rowIndex + i, columnIndex - i);
             Color northWestern = getColor(rowIndex - i, columnIndex - i);
 
             if (northEastern == middle) {
-                if (expectedMatchingCount == ++matchingCountNorthEastSide) {
+                if (expectedAdjacencyCount == ++adjacencyCountNorthEastSide) {
                     return true;
                 }
             }
             if (southEastern == middle) {
-                if (expectedMatchingCount == ++matchingCountSouthEastSide) {
+                if (expectedAdjacencyCount == ++adjacencyCountSouthEastSide) {
                     return true;
                 }
             }
             if (southWestern == middle) {
-                if (expectedMatchingCount == ++matchingCountSouthWestSide) {
+                if (expectedAdjacencyCount == ++adjacencyCountSouthWestSide) {
                     return true;
                 }
             }
             if (northWestern == middle) {
-                if (expectedMatchingCount == ++matchingCountNorthWestSide) {
+                if (expectedAdjacencyCount == ++adjacencyCountNorthWestSide) {
                     return true;
                 }
             }
         }
         return false;
-    }
-
-    protected int getRows() {
-        return colors.length;
-    }
-
-    protected int getColumns() {
-        return colors[0].length;
     }
 }

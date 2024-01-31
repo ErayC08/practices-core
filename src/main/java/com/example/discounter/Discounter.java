@@ -2,6 +2,7 @@ package com.example.discounter;
 
 import java.math.BigDecimal;
 
+@FunctionalInterface
 public interface Discounter {
     static Discounter christmasDiscounter() {
         return amount -> amount.multiply(BigDecimal.valueOf(0.9));

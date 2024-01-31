@@ -1,13 +1,9 @@
 package com.example.meeting.service;
 
 import com.example.meeting.Meeting;
-import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.TreeSet;
-import java.util.stream.Collectors;
 
-@Service
 public class MeetingService {
     private final TreeSet<Meeting> meetings;
 
@@ -19,23 +15,15 @@ public class MeetingService {
         this(new TreeSet<>());
     }
 
-    public TreeSet<Meeting> meetings() {
-        return this.meetings;
-    }
-
-    public TreeSet<Meeting> pendingMeetings() {
-        return this.meetings.stream().filter(Meeting::isPending).collect(Collectors.toCollection(TreeSet::new));
-    }
-
-    public Meeting nextMeeting() {
-        return this.meetings.higher(Meeting.pseudoMeeting(null, null, LocalDateTime.now()));
-    }
-
     public boolean add(Meeting meeting) {
-        return this.meetings.add(meeting);
+        return meetings.add(meeting);
     }
 
-    public boolean remove(LocalDateTime dateTime) {
-        return this.meetings.remove(Meeting.pseudoMeeting(null, null, dateTime));
+    public boolean remove(Meeting meeting) {
+        return meetings.remove(meeting);
+    }
+
+    protected final TreeSet<Meeting> getMeetings() {
+        return meetings;
     }
 }
